@@ -22,10 +22,6 @@ app.get('/api/posts', function (req, res, next) {
     */
 })
 
-app.listen(3000, function (){
-    console.log('Server listening on', 3000)
-})
-
 // Using Mongoose Models with the POST Endpoint
 app.post('/api/posts', function (req, res, next) {
     var post = new Post({
@@ -45,3 +41,12 @@ app.post('/api/posts', function (req, res, next) {
     */
     
 })
+
+app.get('/', function (req, res) {
+    res.sendfile('layouts/posts.html')
+})
+
+app.listen(3000, function (){
+    console.log('Server listening on', 3000)
+})
+

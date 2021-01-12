@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>>
+</head>
+<!-- Declare body as an angular app -->
+<body ng-app='app'>
+    <div ng-controller='PostsCtrl' class='container'>
+        <h1>Recent Posts</h1>
+        <input ng-model='postBody' class='form-control' />
+        <button ng-click='addPost()' class='btn btn-default'>Add Post</button>
+        <ul class='list-group'>
+            <li ng-repeat='post in posts' class='list-group-item'>
+                <strong>@{{ post.username }}</strong>
+                <span>{{ post.body }}</span>
+            </li>
+        </ul>
+    </div>
+    <!-- Import angular.js -->
+    <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js'>
+    </script>
+
+    <!-- Write angular script -->
+    <script>
+        var app = angular.module('app', [])
+        // Adding new posts
+        app.controller('PostsCtrl', function ($scope, $http) {
+            $scope.addPost = function () {
+                if ($scope.postBody) {
+                    $http.post('/api/posts', {
+                        username: 'dickeyxxx',
+                        body: $scope.postBody
+                    }).success(function (post) {
+                        $scope.posts.unshift(post)
+                        $scope.postBody = null
+                    })
+                }
+                
+                /*
+                {
+                $scope.posts.unshift({
+                    username: 'dickeyxxx',
+                    body: $scope.postBody
+                })
+                $scope.postBody = null
+              }
+              */
+            }
+            
+            $http.get('http://localhost:3000/api/posts')
+            .success(function (posts) {
+                $scope.posts = posts
+            })
+
+            
+            /*
+            $scope.posts = [
+                {
+                    username: 'dickeyxxxx',
+                    body: 'Node rules!'
+                },
+                {
+                    username: 'jeffdickey',
+                    body: 'trying out angular.js...'
+                }
+            ]
+            */
+        })
+    </script>
+</body>
+</html>
